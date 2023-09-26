@@ -5,7 +5,7 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UserSecretsId>SingularityInterview.Server-8d21b237-9f3b-4987-bfa3-f3162cde032c</UserSecretsId>
-		<RootNamespace>SingularityInterview.Api.REST</RootNamespace>
+		<RootNamespace>SingularityInterview.APIs.REST</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>
