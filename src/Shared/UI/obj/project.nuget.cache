@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "sGDCEZ1ZxcTgmZTRjLVG8CnhWivi957Pfy5T6EIoDw51c5lqZWGGORjrgjgBGo2WxMbfT557CdPzsmm5EExT4g==",
+  "success": true,
+  "projectFilePath": "D:\\Projects\\github\\SingularityInterviewProject\\src\\Shared\\UI\\Shared.UI.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\HP\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.9\\microsoft.windowsdesktop.app.ref.7.0.9.nupkg.sha512",
+    "C:\\Users\\HP\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.9\\microsoft.netcore.app.ref.7.0.9.nupkg.sha512",
+    "C:\\Users\\HP\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.9\\microsoft.aspnetcore.app.ref.7.0.9.nupkg.sha512"
+  ],
+  "logs": []
+}
