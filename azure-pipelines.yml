@@ -62,6 +62,7 @@ stages:
     - task: UseDotNet@2
       displayName: 'Install .NET SDK'        
   - job: Restore_Packages
+    dependsOn: Prepare_Environment
     displayName: 'Restore NuGet package'
     steps:
     - task: DotNetCoreCLI@2
@@ -70,6 +71,7 @@ stages:
         command: restore
   - job: Compile
     displayName: 'Compile Solution'
+    dependsOn: Restore_Packages
     steps:
     - task: DotNetCoreCLI@2
       displayName: Compile
