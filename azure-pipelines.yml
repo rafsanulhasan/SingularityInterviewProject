@@ -40,9 +40,9 @@ variables:
     value: $[counter( variables['BETA'] , 0 )]
   - name: VERSION_SUFFIX
     value:
-    ${{ if and(succeeded(), eq(variables['Build.Reason'], 'IndividualCI'), in(variables['Build.SourceBranchName'], 'dev')) }}:  
+    ${{ if and(eq(variables['Build.Reason'], 'IndividualCI'), in(variables['Build.SourceBranchName'], 'dev')) }}:  
       '-preview$(BETA_VERSION)'
-    ${{ if and(succeeded(), eq(variables['Build.Reason'], 'IndividualCI'), not(in(variables['Build.SourceBranchName'], 'main', 'dev'))) }}:
+    ${{ if and(eq(variables['Build.Reason'], 'IndividualCI'), not(in(variables['Build.SourceBranchName'], 'main', 'dev'))) }}:
       '-beta$(BETA_VERSION)'
   - name: VERSION
     value: 'V$(MAJOR_MINOR_VERSION).$(REVISION_VERSION).$(PATCH_VERSION)$(VERSION_SUFFIX)'
