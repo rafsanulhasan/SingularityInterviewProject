@@ -1,46 +1,45 @@
-﻿using LanguageExt;
+﻿using System.Net.Mail;
+using LanguageExt;
 using LanguageExt.Common;
 using OneOf;
 using SingularityInterview.APIs.Domain.Kernel.Shared.Exceptions;
 
 namespace SingularityInterview.APIs.Domain.Kernel.Shared.ValueObjects;
+
 public class Email
-    : OneOfBase<string, OptionalResult<string>>
+    : OneOfBase<OptionalResult<string>>
 {
     private readonly OptionalResult<string> _email;
 
-    private Email(OneOf<string, OptionalResult<string>> email)
+    private Email(OneOf<OptionalResult<string>> email)
         : base(email)
     {
+        _email = email.Match(
+            f0: (OptionalResult<string> optionalEmail) => optionalEmail);
     }
 
-    public Exception Exception { get; private set; }
+    public Option<Exception> Exception { get; private set; } = Option<Exception>.None;
 
     public static Email Create(string? email)
     {
-        if (email is null)
+        if (email is null || string.IsNullOrWhiteSpace(email))
         {
-            return new Email(new OptionalResult<string>(
-                e: new InvalidEmailException($"Email can't be null.")));
+            return new Email(OptionalResult<string>.Optional(null!));
         }
 
-        Email result = new(email);
-        Option<InvalidEmailException> optionalException = InvalidEmailException.ReturnIfInvalid(result);
+        Email result;
+        if (!MailAddress.TryCreate(email, out MailAddress? mailAddress))
+        {
+            InvalidEmailException e = new("Invalid email address");
+            result = new(new OptionalResult<string>(e))
+            {
+                Exception = e,
+            };
+            return result;
+        }
 
-        return optionalException.Match(
-            Some: (InvalidEmailException e) => new Email(new OptionalResult<string>(
-                e)),
-            None: () => result);
-    }
-
-    public static Email Create(Option<string> email)
-    {
-        Email address = email.Match(
-            Some: (string mail) => string.IsNullOrWhiteSpace(mail)
-                ? Create(null)
-                : new Email(mail),
-            None: () => Create(null));
-        return address;
+        result = new(OptionalResult<string>.Some(mailAddress.ToString()));
+        return result;
     }
 
     public static implicit operator Email(string? email)
@@ -51,8 +50,7 @@ public class Email
     public static implicit operator string(Email email)
     {
         return email.Match(
-            f0: (string mail) => mail,
-            f1: (OptionalResult<string> optionalEmail) => optionalEmail.Match(
+            f0: (OptionalResult<string> optionalEmail) => optionalEmail.Match(
                 Some: (string mail) => mail,
                 None: () => string.Empty,
                 Fail: (Exception ex) =>
@@ -80,6 +78,5 @@ public class Email
                 Exception = ex;
                 return string.Empty;
             });
-        ;
     }
 }
