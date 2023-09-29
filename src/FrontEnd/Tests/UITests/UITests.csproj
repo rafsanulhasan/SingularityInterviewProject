@@ -1,5 +1,6 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="$(SolutionDir)CodeCoverage.props" />
+	
 	<PropertyGroup>
 		<TargetFramework>net7.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
@@ -7,16 +8,18 @@
 
 		<IsPackable>false</IsPackable>
 		<IsTestProject>true</IsTestProject>
+		<AssemblyName>SingularityInterview.Apps.Tests.UITests</AssemblyName>
 		<RootNamespace>SingularityInterview.Apps.Tests.UITests</RootNamespace>
+		<Threshold>0</Threshold>
+		<ThresholdType>line</ThresholdType>
+		<ThresholdStat>minimum</ThresholdStat>
+		<DefaultTestResultsPath>$(DefaultTestPath)\Results\FrontEnd\$(MSBuildProjectName)</DefaultTestResultsPath>
+		<CoverletOutput>$([MSBuild]::EnsureTrailingSlash('$(DefaultTestResultsPath)'))</CoverletOutput>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="bunit.web" Version="1.23.9" />
 		<PackageReference Include="bunit.web.testcomponents" Version="1.23.9" />
-		<PackageReference Include="coverlet.msbuild" Version="6.0.0">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
 		<PackageReference Include="FluentAssertions" Version="6.12.0" />
 		<PackageReference Include="FluentAssertions.Analyzers" Version="0.24.0">
 			<PrivateAssets>all</PrivateAssets>
@@ -32,15 +35,6 @@
 		<PackageReference Include="NUnit" Version="3.13.3" />
 		<PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
 		<PackageReference Include="NUnit.Analyzers" Version="3.8.0">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="coverlet.collector" Version="6.0.0">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="ReportGenerator" Version="5.1.25" />
-		<PackageReference Include="SonarAnalyzer.CSharp" Version="9.10.0.77988">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>

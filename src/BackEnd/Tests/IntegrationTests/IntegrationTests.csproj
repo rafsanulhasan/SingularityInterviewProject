@@ -1,4 +1,5 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="$(SolutionDir)CodeCoverage.Props" />
 
 	<PropertyGroup>
 		<TargetFramework>net7.0</TargetFramework>
@@ -7,7 +8,13 @@
 
 		<IsPackable>false</IsPackable>
 		<IsTestProject>true</IsTestProject>
+		<AssemblyName>SingularityInterview.APIs.Tests.IntegrationTests</AssemblyName>
 		<RootNamespace>SingularityInterview.APIs.Tests.IntegrationTests</RootNamespace>
+		<Threshold>0</Threshold>
+		<ThresholdType>line</ThresholdType>
+		<ThresholdStat>minimum</ThresholdStat>
+		<DefaultTestResultsPath>$(DefaultTestPath)\Results\BackEnd\$(MSBuildProjectName)</DefaultTestResultsPath>
+		<CoverletOutput>$([MSBuild]::EnsureTrailingSlash('$(DefaultTestResultsPath)'))</CoverletOutput>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -15,10 +22,6 @@
 		<PackageReference Include="NUnit" Version="3.13.3" />
 		<PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
 		<PackageReference Include="NUnit.Analyzers" Version="3.8.0">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="coverlet.collector" Version="6.0.0">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>

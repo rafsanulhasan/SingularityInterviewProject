@@ -1,0 +1,15 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<Target Name="GenerateCoverageReports" AfterTargets="GenerateCoverageResultAfterTest">
+		<ItemGroup>
+			<CoverageResultFiles Include="$(SolutionDir)src\Tests\Results\BackEnd\ArchTests\coverage.cobertura.xml" />
+			<CoverageResultFiles Include="$(SolutionDir)src\Tests\Results\BackEnd\UnitTests\coverage.cobertura.xml" />
+			<CoverageResultFiles Include="$(SolutionDir)src\Tests\Results\BackEnd\IntegrationTests\coverage.cobertura.xml" />
+
+			<CoverageResultFiles Include="$(SolutionDir)src\Tests\Results\FrontEnd\ArchTests\coverage.cobertura.xml" />
+			<CoverageResultFiles Include="$(SolutionDir)src\Tests\Results\FrontEnd\UITests\coverage.cobertura.xml" />
+			<CoverageResultFiles Include="$(SolutionDir)src\Tests\Results\FrontEnd\AcceptanceTests\coverage.cobertura.xml" />
+		</ItemGroup>
+		<ReportGenerator ReportFiles="@(CoverageResultFiles)" TargetDirectory="$(DefaultTestReportsPath)" ReportTypes="Cobertura;HtmlSummary;TextSummary;SonarQube" VerbosityLevel="Verbose" />
+	</Target>
+
+</Project>
