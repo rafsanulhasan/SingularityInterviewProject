@@ -98,7 +98,7 @@ stages:
     - task: SonarQubePrepare@5
       condition: eq(variables['AnalysisEnabled'], 'true')
       inputs:
-        SonarQube: '$(SONAR_HOST)'
+        SonarQube: 'SingularitySonarConn'
         scannerMode: 'MSBuild' # 'MSBuild' | 'Other' | 'CLI'. Required. Choose the way to run the analysis. Default: MSBuild.
         #configMode: 'file' # 'file' | 'manual'. Required when scannerMode = CLI. Mode. Default: file.
         #configFile: 'sonar-project.properties' # string. Optional. Use when scannerMode = CLI && configMode = file. Settings File. Default: sonar-project.properties.
