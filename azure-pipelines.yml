@@ -1,0 +1,195 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- fixes/bugs/*
+- fixes/security/*
+- fixes/vulnerability/*
+- features/stories/*
+- features/tasks/*
+- configuration/*
+
+pr:
+  - dev
+  - main
+
+variables: 
+  - name: IsPR
+    value: 'false'
+    $ { { if eq(variables['Build.Reason'], 'PullRequest') }}:
+    value: 'true'
+  - name: AnalsisEnabled
+    value: 'false'
+    $ { { if and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'), eq(variables['System.PullRequest.TargetBranchName'], 'dev')) }}:
+    value: 'true'
+  - name: MAJOR_MINOR_VERSION
+    value: '0.0'
+  - name: REVISION_VERSION
+    value: $[counter( variables['MAJOR_MINOR_VERSION'] , 0 )]
+  - name: PATCH
+    value: 0
+  - name: PATCH_VERSION
+    value: $[counter( variables['PATCH'] , 0 )]
+  - name: PREVIEW
+    value: 0
+  - name: PREVIEW_VERSION
+    value: $[counter( variables['PREVIEW'] , 0 )]
+  - name: BETA
+    value: 0
+  - name: BETA_VERSION
+    value: $[counter( variables['BETA'] , 0 )]
+  - name: VERSION_SUFFIX
+    value: ''
+    $ { { if and(succeeded(), eq(variables['Build.Reason'], 'IndividualCI'), in(variables['Build.SourceBranchName'], 'dev')) }}:
+    value: '-preview$(PREVIEW_VERSION)'
+    $ { { if and(succeeded(), eq(variables['Build.Reason'], 'IndividualCI'), not(in(variables['Build.SourceBranchName'], 'main', 'dev'))) }}:
+    value: '-beta$(BETA_VERSION)'
+  - name: VERSION
+    value: 'V$(MAJOR_MINOR_VERSION).$(REVISION_VERSION).$(PATCH_VERSION)$(VERSION_SUFFIX)'
+  - name: DefaultTestResultPath
+    value: $(Agent.BuildDirectory)/src/Tests/Results
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+- stage: Build_Stage
+  displayName: Build
+  jobs:
+  - job: Prepare_Environment
+    displayName: 'Prepare Environment for Building .NET projects'
+    steps:
+    - task: UseDotNet@2
+      displayName: 'Install .NET SDK'        
+  - job: Restore_Packages
+    displayName: 'Restore NuGet package'
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: Restore
+      inputs:
+        command: restore
+  - job: Compile
+    displayName: 'Compile Solution'
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: Compile
+      inputs:
+        command: build
+        arguments: '--configuration $(BuildConfiguration)'
+- stage: Test_Stage
+  displayName: Test
+  dependsOn: Build_Stage
+  jobs:
+  - job: Prepare_Environment
+    displayName: 'Prepare Environment for Building .NET projects'
+    steps:
+    - task: UseDotNet@2
+      displayName: 'Install .NET SDK'         
+  - job: Restore_Packages
+    displayName: 'Restore NuGet package'
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: Restore
+      inputs:
+        command: restore
+  - job: Test
+    displayName: 'Test Solution'
+    steps:
+    - task: SonarQubePrepare@5
+      condition: eq(variables['AnalysisEnabled'], 'true')
+      inputs:
+        SonarQube: '$(SONAR_HOST)'
+        scannerMode: 'MSBuild' # 'MSBuild' | 'Other' | 'CLI'. Required. Choose the way to run the analysis. Default: MSBuild.
+        #configMode: 'file' # 'file' | 'manual'. Required when scannerMode = CLI. Mode. Default: file.
+        #configFile: 'sonar-project.properties' # string. Optional. Use when scannerMode = CLI && configMode = file. Settings File. Default: sonar-project.properties.
+        #cliProjectKey: '$(SONAR_PROJECT_KEY)' # string. Required when scannerMode = CLI && configMode = manual. Project Key. 
+        projectKey: '$(SONAR_PROJECT_KEY)' # string. Required when scannerMode = MSBuild. Project Key. 
+        #cliProjectName: # string. Optional. Use when scannerMode = CLI && configMode = manual. Project Name. 
+        #projectName: # string. Optional. Use when scannerMode = MSBuild. Project Name. 
+        #cliProjectVersion: '1.0' # string. Optional. Use when scannerMode = CLI && configMode = manual. Project Version. Default: 1.0.
+        projectVersion: '$(VERSION)' # string. Optional. Use when scannerMode = MSBuild. Project Version. Default: 1.0.
+        #cliSources: '.' # string. Required when scannerMode = CLI && configMode = manual. Sources directory root. Default: ..
+      # Advanced
+        extraProperties: 
+          - sonar.exclusions=**/*Tests # string. Additional Properties.  
+          - sonar.coverageReportPaths="./src/tests/Reports/SonarQube.xml"
+          - sonar.flex.cobertura.reportPaths="./src/tests/Reports/Cobertura.xml"
+          - sonar.cs.vstest.reportsPaths="./src/tests/Results/**/*.trx"
+    - task: DotNetCoreCLI@2
+      displayName: 'BackEnd: Architecture Tests'
+      inputs:
+        command: test
+        projects: '**/BackEnd/**/ArchTests.csproj'
+        arguments: '--configuration $(BuildConfiguration) --collect:"XPlat Code Coverage" --logger "trx;" --results-directory $(DefaultTestResultPath)/BackEnd/ArchTests'
+        failTaskOnFailedTests: true
+        failOnUnstableResult: true
+        publishTestResults: false
+        resultsFolder: $(DefaultTestResultPath)
+        skipWaitingForResults: false
+      continueOnError: : false
+    - task: DotNetCoreCLI@2
+      displayName: 'BackEnd: Unit Tests'
+      inputs:
+        command: test
+        projects: '**/BackEnd/**/UnitTests.csproj'
+        arguments: '--configuration $(BuildConfiguration) --collect:"XPlat Code Coverage" --logger "trx;" --results-directory $(DefaultTestResultPath)/BackEnd/UnitTests'
+        failTaskOnFailedTests: true
+        failOnUnstableResult: true
+        publishTestResults: false
+        resultsFolder: $(DefaultTestResultPath)
+        skipWaitingForResults: false
+    - task: DotNetCoreCLI@2
+      displayName: 'BackEnd: Integration Tests'
+      inputs:
+        command: test
+        projects: '**/BackEnd/**/IntegrationTests.csproj'
+        arguments: '--configuration $(BuildConfiguration) --collect:"XPlat Code Coverage" --logger "trx;" --results-directory $(DefaultTestResultPath)/BackEnd/IntegrationTests'
+        failTaskOnFailedTests: true
+        failOnUnstableResult: true
+        publishTestResults: false
+        resultsFolder: $(DefaultTestResultPath)
+        skipWaitingForResults: false
+    - task: DotNetCoreCLI@2
+      displayName: 'FrontEnd: Architecture Tests'
+      inputs:
+        command: test
+        projects: '**/FrontEnd/**/ArchTests.csproj'
+        arguments: '--configuration $(BuildConfiguration) --collect:"XPlat Code Coverage" --logger "trx;" --results-directory $(DefaultTestResultPath)/FrontEnd/ArchTests'
+        failTaskOnFailedTests: true
+        failOnUnstableResult: true
+        publishTestResults: false
+        resultsFolder: $(DefaultTestResultPath)
+        skipWaitingForResults: false
+      continueOnError: : false
+    - task: DotNetCoreCLI@2
+      displayName: 'FrontEnd: UI Tests'
+      inputs:
+        command: test
+        projects: '**/FrontEnd/**/UITests.csproj'
+        arguments: '--configuration $(BuildConfiguration) --collect:"XPlat Code Coverage" --logger "trx;" --results-directory $(DefaultTestResultPath)/FrontEnd/UITests'
+        failTaskOnFailedTests: true
+        failOnUnstableResult: true
+        publishTestResults: false
+        resultsFolder: $(DefaultTestResultPath)
+        skipWaitingForResults: false
+    - task: DotNetCoreCLI@2
+      displayName: 'FrontEnd: Acceptance Tests'
+      inputs:
+        command: test
+        projects: '**/FrontEnd/**/AcceptanceTests.csproj'
+        arguments: '--configuration $(BuildConfiguration) --collect:"XPlat Code Coverage" --logger "trx;" --results-directory $(DefaultTestResultPath)/FrontEnd/AcceptanceTests'
+        failTaskOnFailedTests: true
+        failOnUnstableResult: true
+        publishTestResults: true
+        resultsFolder: $(DefaultTestResultPath)
+        skipWaitingForResults: false
+
+    # Run Code Analysis task
+    - task: SonarQubeAnalyze@5
+
+    # Publish Quality Gate Result task
+    - task: SonarQubePublish@5
+      inputs:
+        pollingTimeoutSec: '300'

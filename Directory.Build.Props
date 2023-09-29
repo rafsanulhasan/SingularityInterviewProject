@@ -1,0 +1,47 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<ImplicitUsings>true</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<LangVersion>latest</LangVersion>
+		<Root>$(SolutionDir)</Root>
+		<SrcDir>$(SolutionDir)src</SrcDir>
+		<BackEndRoot>$(SrcDir)\BackEnd</BackEndRoot>
+		<BackEndTestRoot>$(BackEndRoot)\Tests</BackEndTestRoot>
+		<FrontEndRoot>$(SrcDir)\BackEnd</FrontEndRoot>
+		<FrontEndTestRoot>$(FrontEndRoot)\Tests</FrontEndTestRoot>
+		<DefaultTestPath>$(SrcDir)\Tests</DefaultTestPath>
+		<DefaultTestResultsPath>$(DefaultTestPath)\Results</DefaultTestResultsPath>
+		<DefaultTestReportsPath>$(DefaultTestPath)\Reports</DefaultTestReportsPath>
+		<NoWarn>$(NoWarn);IDE0003;SA1200;SA1633;NETSDK1138;CS9057</NoWarn>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+		<AnalysisLevel>7.0</AnalysisLevel>
+		<GenerateDocumentationFile Condition="'$(SonarQubeTestProject)' == 'true'">True</GenerateDocumentationFile>
+		<DocumentationFile Condition="'$(SonarQubeTestProject)' == 'true'">$(MSBuildProjectDirectory)\bin\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
+		<SonarQubeTestProject>false</SonarQubeTestProject>
+
+		<Company>Singularity</Company>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<SonarQubeSetting Include="sonar.projectBaseDir">
+			<Value>$(MSBuildProjectDirectory)</Value>
+		</SonarQubeSetting>
+		<SonarQubeSetting Include="sonar.exclusions">
+			<Value>**/bin/**/**/*.dll,**/obj/**/**/*.*,**/Migrations/*.cs,**/*ArchTests/**/*.cs,**/*UnitTests/*.cs,**/*IntegrationTests/**/*.cs,**/*AcceptanceTests/**/*.cs,**/*UITests/**/*.cs</Value>
+		</SonarQubeSetting>
+		<SonarQubeSetting Include="sonar.tests">
+			<Value>src/Backend/Tests,src/Frontend/Tests</Value>
+		</SonarQubeSetting>
+		<SonarQubeSetting Include="sonar.test.inclusions">
+			<Value>src/Backend/Tests/**/*.cs,src/Frontend/Tests/**/*.cs</Value>
+		</SonarQubeSetting>
+		<SonarQubeSetting Include="sonar.test.exclusions">
+			<Value></Value>
+		</SonarQubeSetting>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="$(Root)\NuGet.config" Visible="true" Link="nuget.config" />
+	</ItemGroup>
+</Project>

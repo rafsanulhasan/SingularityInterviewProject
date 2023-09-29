@@ -1,0 +1,14 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<CollectCoverage Condition=" '$(CollectCoverage)' != 'true' ">true</CollectCoverage>
+		<CoverletOutput>$([MSBuild]::EnsureTrailingSlash('$(DefaultTestResultsPath)'))</CoverletOutput>
+		<CoverletOutputFormat>cobertura</CoverletOutputFormat>
+		<ExcludeByAttribute>ExcludeFromCodeCoverageAttribute,GeneratedCodeAttribute,ObsoleteAttribute</ExcludeByAttribute>
+		<Threshold>80</Threshold>
+		<ThresholdType>line</ThresholdType>
+		<ThresholdStat>average</ThresholdStat>
+		<DefaultTestPath>$(SolutionDir)src\Tests</DefaultTestPath>
+		<DefaultTestResultsPath>$(SolutionDir)src\Tests\Results</DefaultTestResultsPath>
+		<DefaultTestReportsPath>$(SolutionDir)src\Tests\Reports</DefaultTestReportsPath>
+	</PropertyGroup>
+</Project>

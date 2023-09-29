@@ -15,31 +15,37 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp", "src\FrontEnd\WebA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIs", "src\BackEnd\APIs\APIs.csproj", "{5DAACD48-69DC-4413-945E-B7D5757F18DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Kernel", "src\BackEnd\Domain.Kernel\Domain.Kernel.csproj", "{C0BBDB87-768D-44E6-BFA9-BD291E2F9525}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Kernel", "src\BackEnd\Domain.Kernel\Domain.Kernel.csproj", "{C0BBDB87-768D-44E6-BFA9-BD291E2F9525}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Features", "Features", "{1713E909-35E8-4DEE-8F5A-1BCD31CF87B4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IAM", "src\BackEnd\Features\IAM\IAM.csproj", "{7B2D78A2-6B25-46FD-BC05-0505C85709FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserInformation", "src\BackEnd\Features\UserInformation\UserInformation.csproj", "{68C97209-1CD1-4432-831C-8418F6701695}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserInformation", "src\BackEnd\Features\UserInformation\UserInformation.csproj", "{68C97209-1CD1-4432-831C-8418F6701695}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Kernel", "src\FrontEnd\Domain.Kernel\Domain.Kernel.csproj", "{DAF9EF51-04B7-486A-84EC-5DED863F0243}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Kernel", "src\FrontEnd\Domain.Kernel\Domain.Kernel.csproj", "{DAF9EF51-04B7-486A-84EC-5DED863F0243}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Features", "Features", "{8B8B95DF-9EA2-415C-B33D-ECA2AA2A711B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IAM", "src\FrontEnd\Features\IAM\IAM.csproj", "{4700C6CA-1D53-4673-9892-310C935F79F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IAM", "src\FrontEnd\Features\IAM\IAM.csproj", "{4700C6CA-1D53-4673-9892-310C935F79F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserInformation", "src\FrontEnd\Features\UserInformation\UserInformation.csproj", "{65045457-C1F1-48BC-A6DC-3C05FC203EE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserInformation", "src\FrontEnd\Features\UserInformation\UserInformation.csproj", "{65045457-C1F1-48BC-A6DC-3C05FC203EE0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9EC8B774-B7B3-45D8-A3CB-EAB7E88AB6FB}"
+	ProjectSection(SolutionItems) = preProject
+		src\BackEnd\Tests\Directory.Build.Props = src\BackEnd\Tests\Directory.Build.Props
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArchTests", "src\BackEnd\Tests\ArchTests\ArchTests.csproj", "{455E4F6D-9BE3-4502-B298-986010BCCEC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArchTests", "src\BackEnd\Tests\ArchTests\ArchTests.csproj", "{455E4F6D-9BE3-4502-B298-986010BCCEC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "src\BackEnd\Tests\UnitTests\UnitTests.csproj", "{E6682061-1E83-428C-A11B-755F0D3BA7AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "src\BackEnd\Tests\UnitTests\UnitTests.csproj", "{E6682061-1E83-428C-A11B-755F0D3BA7AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "src\BackEnd\Tests\IntegrationTests\IntegrationTests.csproj", "{DFE3C0CD-2296-4CEE-8369-3F875E82C828}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "src\BackEnd\Tests\IntegrationTests\IntegrationTests.csproj", "{DFE3C0CD-2296-4CEE-8369-3F875E82C828}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{78D901BD-3FA9-43D9-90A9-7E1D4E13FC64}"
+	ProjectSection(SolutionItems) = preProject
+		src\FrontEnd\Tests\Directory.Build.Props = src\FrontEnd\Tests\Directory.Build.Props
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArchTests", "src\FrontEnd\Tests\ArchTests\ArchTests.csproj", "{B3D87D85-24B2-48C8-9239-A33B935D4F45}"
 EndProject
@@ -52,7 +58,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
+		azure-pipelines.yml = azure-pipelines.yml
+		CodeCoverage.Props = CodeCoverage.Props
+		CodeCoverage.targets = CodeCoverage.targets
 		LICENSE = LICENSE
+		Directory.Build.Props = Directory.Build.Props
 		README.md = README.md
 	EndProjectSection
 EndProject
