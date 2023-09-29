@@ -1,5 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="$(SolutionDir)CodeCoverage.props" />
+	<Import Project="$(SolutionDir)CodeCoverage.targets" />
+	
 	<PropertyGroup>
 		<TargetFramework>net7.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
@@ -7,7 +9,13 @@
 
 		<IsPackable>false</IsPackable>
 		<IsTestProject>true</IsTestProject>
-	  <RootNamespace>SingularityInterview.Apps.Tests.AcceptanceTests</RootNamespace>
+		<AssemblyName>SingularityInterview.Apps.Tests.AcceptanceTests</AssemblyName>
+		<RootNamespace>SingularityInterview.Apps.Tests.AcceptanceTests</RootNamespace>
+		<Threshold>0</Threshold>
+		<ThresholdType>line</ThresholdType>
+		<ThresholdStat>minimum</ThresholdStat>
+		<DefaultTestResultsPath>$(DefaultTestPath)\Results\FrontEnd\$(MSBuildProjectName)</DefaultTestResultsPath>
+		<CoverletOutput>$([MSBuild]::EnsureTrailingSlash('$(DefaultTestResultsPath)'))</CoverletOutput>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -15,7 +23,6 @@
 		<PackageReference Include="NUnit" Version="3.13.3" />
 		<PackageReference Include="NUnit3TestAdapter" Version="4.4.2" />
 		<PackageReference Include="NUnit.Analyzers" Version="3.6.1" />
-		<PackageReference Include="coverlet.collector" Version="3.2.0" />
 	</ItemGroup>
 
 </Project>
