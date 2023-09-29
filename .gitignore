@@ -365,3 +365,9 @@ FodyWeavers.xsd
 #.NET paths
 bin/
 obj/
+
+# Tests
+src/Tests/Results
+src/Tests/Reports
+[Tt]est[Rr]esults
+[Tt]est[Rr]eports
