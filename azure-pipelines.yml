@@ -20,7 +20,7 @@ variables:
     ${{ if eq(variables['Build.Reason'], 'PullRequest')}}:
       value: 'true'
   - name: AnalsisEnabled
-    ${{ if and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'), eq(variables['System.PullRequest.TargetBranchName'], 'dev')) }}:
+    ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(variables['System.PullRequest.TargetBranchName'], 'dev')) }}:
       value: 'true'
   - name: MAJOR_MINOR_VERSION
     value: '0.0'
