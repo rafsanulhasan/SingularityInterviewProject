@@ -17,11 +17,9 @@ pr:
 
 variables: 
   - name: IsPR
-    value: 'false'
     $ { { if eq(variables['Build.Reason'], 'PullRequest') }}:
     value: 'true'
   - name: AnalsisEnabled
-    value: 'false'
     $ { { if and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'), eq(variables['System.PullRequest.TargetBranchName'], 'dev')) }}:
     value: 'true'
   - name: MAJOR_MINOR_VERSION
@@ -41,7 +39,6 @@ variables:
   - name: BETA_VERSION
     value: $[counter( variables['BETA'] , 0 )]
   - name: VERSION_SUFFIX
-    value: ''
     $ { { if and(succeeded(), eq(variables['Build.Reason'], 'IndividualCI'), in(variables['Build.SourceBranchName'], 'dev')) }}:
     value: '-preview$(PREVIEW_VERSION)'
     $ { { if and(succeeded(), eq(variables['Build.Reason'], 'IndividualCI'), not(in(variables['Build.SourceBranchName'], 'main', 'dev'))) }}:
